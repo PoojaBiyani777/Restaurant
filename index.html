@@ -1,0 +1,444 @@
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+        body{
+            padding:0;
+            margin:0;
+        }
+        .full{
+            width:100%;
+            height:100%;
+        }
+        .side_bar{
+            position:fixed;
+            top:0;
+            left:0;
+            height:inherit;
+            display:inline-block;
+            width:25%;
+            overflow-y:auto;
+            border-right:2px solid #000;
+        }
+        .main{
+            position:fixed;
+            top:0;
+            right:0;
+            height:inherit;
+            display:inline-block;
+            overflow-y:auto;
+            border-left:1px solid #000;
+            width:calc(75% - 3px);
+        }
+        h4{
+            text-align:center;
+        }
+        input[type=search]{
+            border:none;
+            width:80%;
+            display:block;
+            margin:auto;
+            height:40px;
+            box-shadow:0 0.5px 1px 0;
+            padding-left:10px;
+            border-radius:1px;
+            font-size:16px;
+        }
+        input[type=search]:focus{
+            outline:none;
+            box-shadow:0 1px 2px 0;
+        }
+        .table , .item{
+            width:calc(100% - 40px);
+            margin:8px;
+            margin-top:22px;
+            box-shadow:0 0.5px 1px 0;
+            padding:18px 12px 10px 12px;
+            border-radius:3px;
+        }
+        .item{
+            width:calc(80% - 40px);
+        }
+        .table_number{
+            font-size:22px;
+            font-weight:600;
+            padding:5px;
+        }
+        .item_name{
+            font-size:18px;
+            font-weight:500;
+            padding:5px;
+        }
+        .table_info , .item_price{
+            font-size:16px;
+            padding:12px 5px 5px 5px;
+        }
+        .table_details_outer_div{
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+        .table_details{
+            background-color: #fefefe;
+            margin: 6% auto;
+            border: 1px solid #888;
+            width: 600px;
+            position:relative;
+            border-radius:5px;
+        }
+        .close {
+          color: #bbb;
+          position:absolute;
+          top:12;
+          right:12;
+          z-index:2;
+          font-size: 28px;
+          font-weight: bold;
+        }
+        .close:hover , .close:focus {
+          color: #fff;
+          text-decoration: none;
+          cursor: pointer;
+        }
+        .table_box_head{
+            width:inherit:
+            height:50px;
+            background-color:blue;
+            color:#fff;
+            font-size:18px;
+            font-weight:500;
+            padding:16px;
+            position:relative;
+            border-radius:4px 4px 0px 0px;
+            top:0;
+            left:0;
+            right:0;
+        }
+        table.table_items{
+            border:none;
+            padding:16px;
+            width:inherit;
+        }
+        table.table_items th , table.table_items td{
+            padding:12px;
+        }
+        table.table_items input[type=number]{
+            border:none;
+            padding:3px;
+            color:#555;
+            border-bottom:2px solid #d1d1d1;
+        }
+        table.table_items input[type=number]:focus{
+            outline:none;
+            color:#000;
+            border-bottom : 2px solid blue;
+            -webkit-transition : border 500ms ease-out;
+            -moz-transition : border 500ms ease-out;
+            -o-transition : border 500ms ease-out;
+            transition : border 500ms ease-out;
+        }
+        table.table_items input[type=number]::-webkit-inner-spin-button , table.table_items input[type=number]::-webkit-outer-spin-button{
+            border:none;
+            background-color:rgba(0,0,0,0);
+            width:4px;
+            height:12px;
+            cursor:pointer;
+            opacity: 1;
+            margin:0;
+            padding:0;
+        }
+        .clear_table{
+            padding:10px;
+            display:block;
+            text-align:right;
+            cursor:pointer;
+        }
+    </style>
+    <script id="itemsJson" type="application/json">{
+      "1":{
+          "name":"Chicken Biryani",
+          "price":180,
+          "course":"main course",
+          "cuisine":"indian"
+      },
+      "2":{
+          "name":"Chicken Biryani Mini",
+          "price":120,
+          "course":"main course",
+          "cuisine":"indian"
+      },
+      "3":{
+          "name":"Mutton Biryani",
+          "price":220,
+          "course":"main course",
+          "cuisine":"indian"
+      },
+      "4":{
+          "name":"Spl.Chicken Biryani",
+          "price":240,
+          "course":"main course",
+          "cuisine":"indian"
+      },
+      "5":{
+          "name":"Spl.Mutton Biryani",
+          "price":280,
+          "course":"main course",
+          "cuisine":"indian"
+      },
+      "6":{
+          "name":"Egg Biryani",
+          "price":160,
+          "course":"main course",
+          "cuisine":"indian"
+      },
+      "7":{
+          "name":"Veg. Biryani",
+          "price":160,
+          "course":"main course",
+          "cuisine":"indian"
+      },
+      "8":{
+          "name":"Chicken Biryani Family",
+          "price":450,
+          "course":"main course",
+          "cuisine":"indian"
+      },
+      "9":{
+          "name":"Tandoori Chicken",
+          "price":220,
+          "course":"starters , kebabs",
+          "cuisine":"indian"
+      },
+      "10":{
+          "name":"Chicken Tikka Kebab",
+          "price":220,
+          "course":"starters , kebabs",
+          "cuisine":"indian"
+      },
+      "11":{
+          "name":"Double Ka Meetha",
+          "price":60,
+          "course":"sweets",
+          "cuisine":"indian"
+      },
+      "12":{
+          "name":"Coke",
+          "price":30,
+          "course":"soft drinks , cool",
+          "cuisine":"beverages"
+      },
+      "13":{
+          "name":"Lassi",
+          "price":50,
+          "course":"Lassi",
+          "cuisine":"indian"
+      }
+    }
+    </script>
+    <script id="tablesJson" type="application/json">{
+        "1":{
+            "name":"Table-1",
+            "items":{},
+            "cost":0
+        },
+        "2":{
+            "name":"Table-2",
+            "items":{},
+            "cost":0
+        },
+        "3":{
+            "name":"Table-3",
+            "items":{},
+            "cost":0
+        }
+    }</script>
+    <script>
+        var tablesData;
+        var itemsData;
+        window.onload = function(){
+            tablesData = JSON.parse(document.getElementById("tablesJson").innerHTML);
+            for(var i in tablesData){
+                var table = document.createElement("div");
+                table.id = "table"+i;
+                table.className = "table";
+                table.index=i;
+                table.addEventListener("drop",function(e){  drop(e,this); });
+                table.addEventListener("dragover",allowDrop);
+                table.addEventListener("click",openTable);
+                var tableNo = document.createElement("div");
+                tableNo.className = "table_number";
+                tableNo.innerHTML = tablesData[i].name;
+                var tableDetails  = document.createElement("div");
+                tableDetails.className = "table_info";
+                tableDetails.innerHTML = "Rs."+tablesData[i].cost+" | Total items: "+Object.keys(tablesData[i].items).length;
+                table.append(tableNo);
+                table.append(tableDetails);
+                var tables = document.getElementById("tables");
+                tables.appendChild(table);
+            }
+            itemsData = JSON.parse(document.getElementById("itemsJson").innerHTML);
+            for(var i in itemsData){
+                var item = document.createElement("div");
+                item.id = "item"+i;
+                item.index=i;
+                item.className = "item";
+                item.draggable = "true";
+                item.addEventListener("dragstart",drag);
+                var itemName = document.createElement("div");
+                itemName.className = "item_name";
+                itemName.innerHTML = itemsData[i].name;
+                var itemCost  = document.createElement("div");
+                itemCost.className = "item_price";
+                itemCost.innerHTML = "Rs."+itemsData[i].price;;
+                item.append(itemName);
+                item.append(itemCost);
+                var items = document.getElementById("items");
+                items.appendChild(item);
+            }
+        }
+        function searchTables(event){
+            var searchText = event.target.value.toLowerCase();
+            for(var i in tablesData){
+                if(tablesData[i].name.toLowerCase().indexOf(searchText) > -1){
+                    document.getElementById("table"+i).style.display = "block";
+                }
+                else{
+                    document.getElementById("table"+i).style.display = "none";
+                }
+            }
+        }
+        function searchItems(event){
+            var searchText = event.target.value.toLowerCase();
+            for(var i in itemsData){
+                if(itemsData[i].name.toLowerCase().indexOf(searchText) > -1 || itemsData[i].course.toLowerCase().indexOf(searchText) > -1 || itemsData[i].cuisine.toLowerCase().indexOf(searchText) > -1){
+                    document.getElementById("item"+i).style.display = "block";
+                }
+                else{
+                    document.getElementById("item"+i).style.display = "none";
+                }
+            }
+        }
+        function allowDrop(e) {
+          e.preventDefault();
+        }
+        function drag(e) {
+          e.dataTransfer.setData("text", e.target.index);
+        }
+        function drop(e,dropAt) {
+          e.preventDefault();
+          var itemId = e.dataTransfer.getData("text");
+          var tableId = dropAt.index;
+          addItemToTable(tableId,itemId);
+        }
+        function addItemToTable(tableId,itemId){
+            if(tablesData[tableId].items.hasOwnProperty(itemId)){
+                  tablesData[tableId].items[itemId].quantity += 1;
+            }
+            else{
+                  tablesData[tableId].items[itemId] = { "item":itemsData[itemId],
+                                                              "quantity":1
+                                                             };
+            }
+            tablesData[tableId].cost = getTotalCost(tableId);
+            document.querySelector("#table"+tableId+" .table_info").innerHTML = "Rs."+tablesData[tableId].cost+" | Total items: "+Object.keys(tablesData[tableId].items).length;
+        }
+        function getTotalCost(tableId){
+            var cost = 0;
+            for(var i in tablesData[tableId].items){
+                cost += tablesData[tableId].items[i].item.price * tablesData[tableId].items[i].quantity;
+            }
+            return cost;
+        }
+        function openTable(){
+                var tableId = this.index;
+                var tableHead = document.createElement("div");
+                tableHead.className = "table_box_head";
+                tableHead.innerHTML = "Table - "+tableId+" | Order Details";
+                var tableBoxContent = document.createElement("div");
+                tableBoxContent.className = "table_box_content";
+                var out = "";
+                out += '<table class="table_items">';
+                out += '<tr><th>S.no</th><th>Item</th><th>Price</th><th>Number of servings</th></tr>';
+                var count = 1;
+                for(var i in tablesData[tableId].items){
+                    out += '<tr id="table-item-'+i+'"><td>'+count+'</td><td>'+tablesData[tableId].items[i].item.name+'</td>';
+                    out += '<td>'+tablesData[tableId].items[i].item.price+'</td>';
+                    out += '<td><input type="number" id="quantity" value="'+tablesData[tableId].items[i].quantity+'" min="1" onchange="setItemQuantity('+tableId+','+i+',this.value)" onkeyup="setItemQuantity('+tableId+','+i+',this.value)"/></td>';
+                    out += '<td><i class="material-icons" onclick="deleteItem('+tableId+','+i+')" style="font-size:18px; color:#222; cursor:pointer;">delete</i></td></tr>';
+                    count++;
+                }
+                out += '<tr><td></td><td></td><td id="total_cost">Total: '+tablesData[tableId].cost+'</td></table>';
+                out += '<div class="clear_table" onclick="clearTable('+tableId+')">CLOSE SESSION(GENERATE BILL)</div>';
+                tableBoxContent.innerHTML = out;
+                var tableBox = document.getElementById("table_box");
+                tableBox.innerHTML = "";
+                tableBox.append(tableHead);
+                tableBox.append(tableBoxContent);
+                document.querySelector(".table_details_outer_div").style.display = "block";
+                this.style.backgroundColor = "#999922";
+        }
+        function closeTable(){
+                document.querySelector(".table_details_outer_div").style.display = "none";
+                document.querySelector(".table").style.backgroundColor = "#fff";
+        }
+        function setItemQuantity(tableId,itemId,quantity){
+                tablesData[tableId].items[itemId].quantity = parseInt(quantity);
+                tablesData[tableId].cost = getTotalCost(tableId);
+                document.getElementById("total_cost").innerHTML = "Total: "+tablesData[tableId].cost;
+                document.querySelector("#table"+tableId+" .table_info").innerHTML = "Rs."+tablesData[tableId].cost+" | Total items: "+Object.keys(tablesData[tableId].items).length;
+        }
+        function deleteItem(tableId,itemId){
+                var item = document.getElementById("table-item-"+itemId);
+                item.parentNode.removeChild(item);
+                delete tablesData[tableId].items[itemId];
+                tablesData[tableId].cost = getTotalCost(tableId);
+                document.querySelector("#table"+tableId+" .table_info").innerHTML = "Rs."+tablesData[tableId].cost+" | Total items: "+Object.keys(tablesData[tableId].items).length;
+                document.getElementById("total_cost").innerHTML = "Total: "+tablesData[tableId].cost;
+        }
+        function clearTable(tableId){
+                closeTable();
+                tablesData[tableId].items = {};
+                tablesData[tableId].cost = 0;
+                document.querySelector("#table"+tableId+" .table_info").innerHTML = "Rs."+tablesData[tableId].cost+" | Total items: "+Object.keys(tablesData[tableId].items).length;
+        }
+        window.onclick = function(event) {
+             if (event.target.id == "table_outer") {
+                  closeTable();
+             }
+        }
+    </script>
+</head>
+<body>
+<div class="full"><div class="side_bar">
+    <h4>Table</h4>
+    <input type="search" id="tableSearch" placeholder="search table" onkeyup="searchTables(event)" onsearch="searchTables(event)"/>
+    <div id="tables">
+
+    </div>
+    </div><div class="main">
+    <h4>Menu</h4>
+    <input type="search" id="menuSearch" placeholder="search items by name,course,cuisine (ex: biryani , indian)" onkeyup="searchItems(event)" onsearch="searchItems(event)"/>
+    <div id="items">
+
+    </div>
+    </div> </div>
+
+    <div class="table_details_outer_div" id="table_outer">
+        <div class="table_details">
+            <span class="close" onclick="closeTable()">&times;</span>
+            <div id="table_box"></div>
+        </div>
+    </div>
+
+
+</body>
+</html>
